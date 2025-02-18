@@ -1,0 +1,264 @@
+-- Tabla TIPO_USUARIO
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "TIPO_USUARIO" (
+  "idTIPOUSUARIO" SERIAL PRIMARY KEY,
+  "descripcion_usuario" VARCHAR(45)
+);
+
+-- -----------------------------------------------------
+-- Tabla USUARIO
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "USUARIO" (
+  "idUsuario" SERIAL PRIMARY KEY,
+  "nombre" VARCHAR(45),
+  "correo" VARCHAR(255),
+  "correo_tbk" VARCHAR(255),
+  "llave_ssh" VARCHAR(255),
+  "TIPO_USUARIO_idTIPOUSUARIO" INTEGER NOT NULL,
+  CONSTRAINT fk_usuario_tipo_usuario1 FOREIGN KEY ("TIPO_USUARIO_idTIPOUSUARIO")
+    REFERENCES "TIPO_USUARIO"("idTIPOUSUARIO")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- -----------------------------------------------------
+-- Tabla CARACT_HARDWARE
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "CARACT_HARDWARE" (
+  "idCARACT_HARDWARE" SERIAL PRIMARY KEY,
+  "bateria" VARCHAR(45),
+  "ram" VARCHAR(45),
+  "ram_hz" INTEGER,
+  "grafica" VARCHAR(45),
+  "tipo_procesador" VARCHAR(45),
+  "modelo_procesador" VARCHAR(45),
+  "tipo_almacenamiento" VARCHAR(45),
+  "espacio_almacenamiento" INTEGER
+);
+
+-- -----------------------------------------------------
+-- Tabla SISTEMA_OPERATIVO
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "SISTEMA_OPERATIVO" (
+  "idSISTEMA_OPERATIVO" SERIAL PRIMARY KEY,
+  "nombre_sistemaoperativo" VARCHAR(45),
+  "versionso" VARCHAR(45)
+);
+
+-- -----------------------------------------------------
+-- Tabla CARACT_SOFTWARE
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "CARACT_SOFTWARE" (
+  "idCARACT_SOFTWARE" SERIAL PRIMARY KEY,
+  "numero_anydesk" INTEGER,
+  "SISTEMA_OPERATIVO_idSISTEMA_OPERATIVO" INTEGER NOT NULL,
+  CONSTRAINT fk_caract_software_sistema_operativo1 FOREIGN KEY ("SISTEMA_OPERATIVO_idSISTEMA_OPERATIVO")
+    REFERENCES "SISTEMA_OPERATIVO"("idSISTEMA_OPERATIVO")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- -----------------------------------------------------
+-- Tabla COMPUTADOR
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "COMPUTADOR" (
+  "idComputador" SERIAL PRIMARY KEY,
+  "nombre_equipo" VARCHAR(40),
+  "numero_factura" INTEGER,
+  "marca" VARCHAR(45),
+  "modelo" VARCHAR(45),
+  "serie" VARCHAR(50) NOT NULL,
+  "numero_modelo" VARCHAR(45),
+  "disponibilidad" SMALLINT,
+  "ESTADO_COMPUTADOR_idESTADOCOMPUTADOR" INTEGER NOT NULL,
+  "CARACT_HARDWARE_idCARACT_HARDWARE" INTEGER NOT NULL,
+  "CARACT_SOFTWARE_idCARACT_SOFTWARE" INTEGER NOT NULL,
+  CONSTRAINT fk_computador_caract_hardware1 FOREIGN KEY ("CARACT_HARDWARE_idCARACT_HARDWARE")
+    REFERENCES "CARACT_HARDWARE"("idCARACT_HARDWARE")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_computador_caract_software1 FOREIGN KEY ("CARACT_SOFTWARE_idCARACT_SOFTWARE")
+    REFERENCES "CARACT_SOFTWARE"("idCARACT_SOFTWARE")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- -----------------------------------------------------
+-- Tabla TIPO_SERVIDOR
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "TIPO_SERVIDOR" (
+  "idTIPOSERVIDOR" SERIAL PRIMARY KEY,
+  "descripcion_tiposervidor" VARCHAR(255)
+);
+
+-- -----------------------------------------------------
+-- Tabla PROCESO_SERVIDOR
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "PROCESO_SERVIDOR" (
+  "idPROCESO_SERVIDOR" SERIAL PRIMARY KEY,
+  "nombre_proceso" VARCHAR(50),
+  "numero_procesos" INTEGER,
+  "identificacion" VARCHAR(50),
+  "ruta" VARCHAR(50),
+  "archivo" VARCHAR(50),
+  "levantamiento" VARCHAR(50)
+);
+
+-- -----------------------------------------------------
+-- Tabla SERVIDOR
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "SERVIDOR" (
+  "idServidor" SERIAL PRIMARY KEY,
+  "nombre_servidor" VARCHAR(45),
+  "TIPO_SERVIDOR_idTIPOSERVIDOR" INTEGER NOT NULL,
+  "id_instancia" VARCHAR(255),
+  "estado_instancia" VARCHAR(45),
+  "ip" VARCHAR(45),
+  "nombre_cuenta" VARCHAR(45),
+  "ssh" SMALLINT,
+  "estado_usuario" VARCHAR(45),
+  "llave" SMALLINT,
+  "estado_llave" VARCHAR(45),
+  "servicios_aplicaciones" VARCHAR(255),
+  "observacion" VARCHAR(255),
+  "PROCESO_SERVIDOR_idPROCESO_SERVIDOR" INTEGER NOT NULL,
+  CONSTRAINT fk_servidor_tipo_servidor1 FOREIGN KEY ("TIPO_SERVIDOR_idTIPOSERVIDOR")
+    REFERENCES "TIPO_SERVIDOR"("idTIPOSERVIDOR")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_proceso_servidor1 FOREIGN KEY ("PROCESO_SERVIDOR_idPROCESO_SERVIDOR")
+    REFERENCES "PROCESO_SERVIDOR"("idPROCESO_SERVIDOR")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- -----------------------------------------------------
+-- Tabla DISPOSITIVO
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "DISPOSITIVO" (
+  "idDISPOSITIVO" SERIAL PRIMARY KEY,
+  "nombre_dispositivo" VARCHAR(100),
+  "marca" VARCHAR(100),
+  "modelo" VARCHAR(100),
+  "serie" VARCHAR(100),
+  "disponibilidad" VARCHAR(45),
+  "almacenamiento" VARCHAR(45)
+);
+
+-- -----------------------------------------------------
+-- Tabla ESTADO_ACTIVO
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "ESTADO_ACTIVO" (
+  "idESTADO_ACTIVO" SERIAL PRIMARY KEY,
+  "descripcion_estadoactivo" VARCHAR(45)
+);
+
+-- -----------------------------------------------------
+-- Tabla LICENCIA
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "LICENCIA" (
+  "idLICENCIA" SERIAL PRIMARY KEY,
+  "tipo_licencia" VARCHAR(45),
+  "descripcion_licencia" VARCHAR(255)
+);
+
+-- -----------------------------------------------------
+-- Tabla MANTENCION_ACTIVO
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "MANTENCION_ACTIVO" (
+  "idMANTENIMIENTO" SERIAL PRIMARY KEY,
+  "detalle_mantencion" VARCHAR(255),
+  "fecha_" TIMESTAMP,
+  "responsable" VARCHAR(45)
+);
+
+-- -----------------------------------------------------
+-- Tabla ACTIVO
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "ACTIVO" (
+  "idActivo" SERIAL PRIMARY KEY,
+  "tipo_activo" VARCHAR(45),
+  "fecha_entrega" DATE,
+  "fecha_compromiso" DATE,
+  "fecha_ingreso" DATE,
+  "COMPUTADOR_idComputador" INTEGER NOT NULL,
+  "SERVIDOR_idServidor" INTEGER NOT NULL,
+  "DISPOSITIVO_idDISPOSITIVO" INTEGER NOT NULL,
+  "ESTADO_ACTIVO_idESTADO_ACTIVO" INTEGER NOT NULL,
+  "LICENCIA_idLICENCIA" INTEGER NOT NULL,
+  "MANTENCION_ACTIVO_idMANTENIMIENTO" INTEGER NOT NULL,
+  CONSTRAINT fk_activo_computador1 FOREIGN KEY ("COMPUTADOR_idComputador")
+    REFERENCES "COMPUTADOR"("idComputador")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_activo_servidor1 FOREIGN KEY ("SERVIDOR_idServidor")
+    REFERENCES "SERVIDOR"("idServidor")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_activo_dispositivo1 FOREIGN KEY ("DISPOSITIVO_idDISPOSITIVO")
+    REFERENCES "DISPOSITIVO"("idDISPOSITIVO")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_activo_estado_activo1 FOREIGN KEY ("ESTADO_ACTIVO_idESTADO_ACTIVO")
+    REFERENCES "ESTADO_ACTIVO"("idESTADO_ACTIVO")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_activo_licencia1 FOREIGN KEY ("LICENCIA_idLICENCIA")
+    REFERENCES "LICENCIA"("idLICENCIA")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_activo_mantencion_activo1 FOREIGN KEY ("MANTENCION_ACTIVO_idMANTENIMIENTO")
+    REFERENCES "MANTENCION_ACTIVO"("idMANTENIMIENTO")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- -----------------------------------------------------
+-- Tabla ASIGNACION
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "ASIGNACION" (
+  "idASIGNACION" SERIAL PRIMARY KEY,
+  "USUARIO_idUsuario" INTEGER NOT NULL,
+  "ACTIVO_idActivo" INTEGER NOT NULL,
+  CONSTRAINT fk_asignacion_usuario1 FOREIGN KEY ("USUARIO_idUsuario")
+    REFERENCES "USUARIO"("idUsuario")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_asignacion_activo1 FOREIGN KEY ("ACTIVO_idActivo")
+    REFERENCES "ACTIVO"("idActivo")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- -----------------------------------------------------
+-- Tabla ACCION_CRUD
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "ACCION_CRUD" (
+  "idACCION" SERIAL PRIMARY KEY,
+  "tipo_accion" VARCHAR(30)
+);
+
+-- -----------------------------------------------------
+-- Tabla REGISTROACCION
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "REGISTROACCION" (
+  "idRegistro" SERIAL PRIMARY KEY,
+  "detalles" VARCHAR(255),
+  "fecha_hora" TIMESTAMP,
+  "ACCION_CRUD_idACCION" INTEGER NOT NULL,
+  "USUARIO_idUsuario" INTEGER NOT NULL,
+  "ACTIVO_idActivo" INTEGER NOT NULL,
+  CONSTRAINT fk_registroaccion_accion_crud1 FOREIGN KEY ("ACCION_CRUD_idACCION")
+    REFERENCES "ACCION_CRUD"("idACCION")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_registroaccion_usuario1 FOREIGN KEY ("USUARIO_idUsuario")
+    REFERENCES "USUARIO"("idUsuario")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT fk_registroaccion_activo1 FOREIGN KEY ("ACTIVO_idActivo")
+    REFERENCES "ACTIVO"("idActivo")
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+

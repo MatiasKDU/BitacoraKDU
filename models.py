@@ -3,11 +3,6 @@ from django.db import models
 class AccionCrud(models.Model):
     tipo_accion = models.CharField(max_length=30, blank=True, null=True)
 
-    class Meta:
-        verbose_name = "Accion del Crud"
-        verbose_name_plural = "Acciones del Crud"
-        db_table = "ACCION_CRUD"
-
     def __str__(self):
         return self.tipo_accion or "AccionCrud"
 
@@ -24,9 +19,6 @@ class Activo(models.Model):
     licencia = models.ForeignKey('Licencia', on_delete=models.CASCADE, blank=True, null=True)
     mantencion_activo = models.ForeignKey('MantencionActivo', on_delete=models.CASCADE, blank=True, null=True)
 
-    class Meta:
-        db_table = "ACTIVO"
-
     def __str__(self):
         return f"Activo: {self.tipo_activo} - Ingreso: {self.fecha_ingreso}"
 
@@ -34,11 +26,6 @@ class Activo(models.Model):
 class Asignacion(models.Model):
     usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
     activo = models.ForeignKey(Activo, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "Asignacion"
-        verbose_name_plural = "Asignaciones"
-        db_table = "ASIGNACION"    
 
     def __str__(self):
         return f"Asignacion: {self.usuario} -> {self.activo}"
@@ -54,11 +41,6 @@ class CaractHardware(models.Model):
     tipo_almacenamiento = models.CharField(max_length=45, blank=True, null=True)
     espacio_almacenamiento = models.IntegerField(blank=True, null=True)
 
-    class Meta:
-        verbose_name = "Caracteristica de Hardware"
-        verbose_name_plural = "Caracteristicas de Hardware"
-        db_table = "CARACT_HARDWARE" 
-
     def __str__(self):
         return f"Hardware: {self.tipo_procesador} {self.modelo_procesador}"
 
@@ -66,11 +48,6 @@ class CaractHardware(models.Model):
 class CaractSoftware(models.Model):
     numero_anydesk = models.IntegerField(blank=True, null=True)
     sistema_operativo = models.ForeignKey('SistemaOperativo', on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "Caracteristica de Software"
-        verbose_name_plural = "Caracteristicas de Software"
-        db_table = "CARACT_SOFTWARE" 
 
     def __str__(self):
         return f"Software: AnyDesk {self.numero_anydesk}"
@@ -88,11 +65,6 @@ class Computador(models.Model):
     caract_hardware = models.ForeignKey(CaractHardware, on_delete=models.CASCADE)
     caract_software = models.ForeignKey(CaractSoftware, on_delete=models.CASCADE)
 
-    class Meta:
-        verbose_name = "Computador"
-        verbose_name_plural = "Computadores"
-        db_table = "COMPUTADOR" 
-
     def __str__(self):
         return self.nombre_equipo or self.serie
 
@@ -105,18 +77,12 @@ class Dispositivo(models.Model):
     disponibilidad = models.CharField(max_length=45, blank=True, null=True)
     almacenamiento = models.CharField(max_length=45, blank=True, null=True)
 
-    class Meta:
-        db_table = "DISPOSITIVO"
-
     def __str__(self):
         return self.nombre_dispositivo or self.serie or "Dispositivo"
 
 
 class EstadoActivo(models.Model):
     descripcion_estadoactivo = models.CharField(max_length=45, blank=True, null=True)
-
-    class Meta:
-        db_table = "ESTADO_ACTIVO"
 
     def __str__(self):
         return self.descripcion_estadoactivo or "EstadoActivo"
@@ -126,9 +92,6 @@ class Licencia(models.Model):
     tipo_licencia = models.CharField(max_length=45, blank=True, null=True)
     descripcion_licencia = models.CharField(max_length=255, blank=True, null=True)
 
-    class Meta:
-        db_table = "LICENCIA"
-
     def __str__(self):
         return self.tipo_licencia or "Licencia"
 
@@ -137,9 +100,6 @@ class MantencionActivo(models.Model):
     detalle_mantencion = models.CharField(max_length=255, blank=True, null=True)
     fecha = models.DateTimeField(blank=True, null=True)  # Renombrado de 'fecha_' a 'fecha'
     responsable = models.CharField(max_length=45, blank=True, null=True)
-
-    class Meta:
-        db_table = "MANTENCION_ACTIVO"
 
     def __str__(self):
         return f"Mantencion: {self.detalle_mantencion}"
@@ -153,11 +113,6 @@ class ProcesoServidor(models.Model):
     archivo = models.CharField(max_length=50, blank=True, null=True)
     levantamiento = models.CharField(max_length=50, blank=True, null=True)
 
-    class Meta:
-        verbose_name = "Proceso Servidor"
-        verbose_name_plural = "Proceso Servidores"
-        db_table = "PROCESO_SERVIDOR"
-
     def __str__(self):
         return self.nombre_proceso or "ProcesoServidor"
 
@@ -168,11 +123,6 @@ class Registroaccion(models.Model):
     accion_crud = models.ForeignKey(AccionCrud, on_delete=models.CASCADE)
     usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
     activo = models.ForeignKey(Activo, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "Registro Accion"
-        verbose_name_plural = "Registro Acciones"
-        db_table = "REGISTROACCION"
 
     def __str__(self):
         return f"Registro: {self.detalles}"
@@ -193,11 +143,6 @@ class Servidor(models.Model):
     observacion = models.CharField(max_length=255, blank=True, null=True)
     proceso_servidor = models.ForeignKey(ProcesoServidor, on_delete=models.CASCADE)
 
-    class Meta:
-        verbose_name = "Servidor"
-        verbose_name_plural = "Servidores"
-        db_table = "SERVIDOR"
-
     def __str__(self):
         return self.nombre_servidor or "Servidor"
 
@@ -206,9 +151,6 @@ class SistemaOperativo(models.Model):
     nombre_sistemaoperativo = models.CharField(max_length=45, blank=True, null=True)
     versionso = models.CharField(max_length=45, blank=True, null=True)
 
-    class Meta:
-        db_table = "SISTEMA_OPERATIVO"
-
     def __str__(self):
         return self.nombre_sistemaoperativo or "SistemaOperativo"
 
@@ -216,22 +158,12 @@ class SistemaOperativo(models.Model):
 class TipoServidor(models.Model):
     descripcion_tiposervidor = models.CharField(max_length=255, blank=True, null=True)
 
-    class Meta:
-        verbose_name = "Tipo Servidor"
-        verbose_name_plural = "Tipos de Servidor"
-        db_table = "TIPO_SERVIDOR"
-
     def __str__(self):
         return self.descripcion_tiposervidor or "TipoServidor"
 
 
 class TipoUsuario(models.Model):
     descripcion_usuario = models.CharField(max_length=45, blank=True, null=True)
-
-    class Meta:
-        verbose_name = "Tipo de Usuario"
-        verbose_name_plural = "Tipos de Usuario "
-        db_table = "TIPO_USUARIO"
 
     def __str__(self):
         return self.descripcion_usuario or "TipoUsuario"
@@ -243,9 +175,6 @@ class Usuario(models.Model):
     correo_tbk = models.CharField(max_length=255, blank=True, null=True)
     llave_ssh = models.CharField(max_length=255, blank=True, null=True)
     tipo_usuario = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "USUARIO" 
 
     def __str__(self):
         return self.nombre or "Usuario"

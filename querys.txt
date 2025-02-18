@@ -1,0 +1,42 @@
+-----------------USUARIO-------------------------------
+SELECT * FROM "USUARIO";
+
+INSERT INTO "USUARIO" ("nombre", "correo", "correo_tbk", "llave_ssh", "TIPO_USUARIO_idTIPOUSUARIO")
+VALUES ('Matias', 'matias@prueba.cl', 'matias@tbkprueba.cl', 'SDAH2213213XCJASNDASD22qe', 1); ---Insertar
+
+UPDATE "USUARIO"
+SET "nombre" = 'Mati'
+WHERE "idUsuario" = 1; ---Modificar
+
+
+SELECT * FROM "TIPO_USUARIO";
+
+INSERT INTO "TIPO_USUARIO" (descripcion_usuario) VALUES ('Administrador');
+
+UPDATE "TIPO_USUARIO"
+SET "descripcion_usuario" = 'Operador'
+WHERE "idTIPOUSUARIO" = 2;
+-----------------BITACORA------------------------------
+SELECT * FROM "REGISTROACCION";
+SELECT * FROM "ACCION_CRUD";
+SELECT * FROM "ASIGNACION";
+-----------------ACTIVO--------------------------------
+SELECT * FROM "ACTIVO";
+SELECT * FROM "MANTENCION_ACTIVO";
+SELECT * FROM "ESTADO_ACTIVO";
+SELECT * FROM "LICENCIA";
+-----------------COMPUTADOR----------------------------
+SELECT * FROM "COMPUTADOR";
+SELECT * FROM "CARACT_HARDWARE";
+SELECT * FROM "CARACT_SOFTWARE";
+-------------------SERVIDOR----------------------------
+SELECT * FROM "SERVIDOR";
+SELECT * FROM "PROCESO_SERVIDOR";
+SELECT * FROM "TIPO_SERVIDOR";
+-------------------DISPOSITIVO-------------------------
+SELECT * FROM "DISPOSITIVO";
+DROP TABLE IF EXISTS "TIPO_USUARIO";
+CREATE TABLE "TIPO_USUARIO" (
+  "idTIPOUSUARIO" SERIAL PRIMARY KEY,
+  "descripcion_usuario" VARCHAR(45)
+);
