@@ -208,6 +208,8 @@ class SistemaOperativo(models.Model):
 
     class Meta:
         db_table = "SISTEMA_OPERATIVO"
+        verbose_name = "Sistema Operativo"
+        verbose_name_plural = "Sistemas Operativos"
 
     def __str__(self):
         return self.nombre_sistemaoperativo or "SistemaOperativo"
