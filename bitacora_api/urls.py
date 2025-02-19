@@ -19,22 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    path('usuarios/', include('appweb.urls')),
-    path('computadores/', include('appweb.urls')),
-    path('activos/', include('appweb.urls')),
-    path('accioncrud/', include('appweb.urls')),
-    path('asignacion/', include('appweb.urls')),
-    path('caracthardware/', include('appweb.urls')),
-    path('caractsoftware/', include('appweb.urls')),
-    path('dispositivo/', include('appweb.urls')),
-    path('estadoactivo/', include('appweb.urls')),
-    path('licencia/', include('appweb.urls')),
-    path('mantencionactivo/', include('appweb.urls')),
-    path('procesoservidor/', include('appweb.urls')),
-    path('tiposervidor/', include('appweb.urls')),
-    path('servidores/', include('appweb.urls')),
-    path('registroaccion/', include('appweb.urls')),
-    path('tipousuario/', include('appweb.urls')),
-    path('sistemaoperativo/', include('appweb.urls'))
+    path('api/v1/', include('appweb.urls'))
 ]
