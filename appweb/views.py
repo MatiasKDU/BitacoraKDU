@@ -1,5 +1,9 @@
 from django.shortcuts import render
 
+from rest_framework.decorators import action
+
+from rest_framework.response import Response
+
 from rest_framework import viewsets
 
 from .serializer import UsuarioSerializer, ComputadorSerializer, ActivoSerializer, AccionCrudSerializer, AsignacionSerializer, CaractHardwareSerializer, CaractSoftwareSerializer, DispositivoSerializer, EstadoActivoSerializer, LicenciaSerializer, MantencionActivoSerializer, ProcesoServidorSerializer, TipoServidorSerializer, ServidorSerializer, RegistroaccionSerializer, TipoUsuarioSerializer, SistemaOperativoSerializer
@@ -19,6 +23,43 @@ class ComputadorView(viewsets.ModelViewSet):
 
     serializer_class = ComputadorSerializer
     queryset = Computador.objects.all()
+
+    #Funciones para sobrenombrar al momento de obtener un compu con el metodo Get por medio de la Api -- 19 de feb
+    @action(detail=True, methods=['get'], url_path='obtener-computador')
+    def obtener_computador(self, request, pk=None):
+        computador = self.get_object()
+        serializer = self.get_serializer(computador)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'], url_path='listar-computadores')
+    def listar_computadores(self, request):
+        computadores = Computador.objects.all()
+        serializer = self.get_serializer(computadores, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['post'], url_path='crear-computador')
+    def crear_computadores(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = 201)
+        return Response(serializer.errors, status=400)
+    
+    @action(detail=True, methods=['put'], url_path='modificar-computador')
+    def modificar_computador(self, request, pk=None):
+        computador = self.get_object()
+        serializer = self.get_serializer(computador, data=request.data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status = 400)
+    
+    @action(detail=True, methods=['delete'], url_path='eliminar-computador')
+    def eliminar_computador(self, request, pk=None):
+        computador = self.get_object()
+        computador.delete()
+        return Response({"Mensaje":"Computador eliminado correcectamente!"}, status=204)
+
 
 class ActivoView(viewsets.ModelViewSet):
 
