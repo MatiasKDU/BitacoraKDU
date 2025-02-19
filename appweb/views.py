@@ -101,7 +101,7 @@ class ActivoView(viewsets.ModelViewSet):
         activo.delete()
         return Response({"Mensaje":"Activo eliminado correctamente!"}, status=204)
 
-class AccionCrudView(viewsets.ModelViewSet):
+class AccionCrudView(viewsets.ModelViewSet):##sdasdasdasads
     serializer_class = AccionCrudSerializer
     queryset = AccionCrud.objects.all()
 
