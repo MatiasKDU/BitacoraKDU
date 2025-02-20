@@ -1,14 +1,22 @@
 from rest_framework import serializers
-
+from django.contrib.auth.models import User
 from .models import Usuario, Computador, Activo, AccionCrud, Asignacion, CaractHardware, CaractSoftware, Dispositivo, EstadoActivo, Licencia, MantencionActivo, ProcesoServidor, TipoServidor, Servidor, Registroaccion, TipoUsuario, SistemaOperativo
 
+#-------------------------------------------------Clases Proceso Login formato-JSON (20-02-2025)------------------------------------------------------------  
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password']
+
+#-------------------------------------------------Clases Proceso Login formato-JSON (20-02-2025)------------------------------------------------------------  
+
+
+#-------------------------------------------------Clases Funciones CRUD formato-JSON (20-02-2025)------------------------------------------------------------  
 class UsuarioSerializer(serializers.ModelSerializer): # 19-feb
     class Meta:
         model = Usuario
         fields = '__all__'       
-
-
 
 class  ComputadorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -91,3 +99,5 @@ class SistemaOperativoSerializer(serializers.ModelSerializer):
     class Meta:
         model = SistemaOperativo
         fields = '__all__'
+
+#-------------------------------------------------Clases Funciones CRUD (formato-JSON)------------------------------------------------------------  
